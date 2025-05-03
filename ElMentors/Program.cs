@@ -1,3 +1,8 @@
+using Elmentors.Repository;
+using ElMentors.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+
 namespace ElMentors
 {
     public class Program
@@ -8,6 +13,11 @@ namespace ElMentors
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<ITopicRepository, TopicRepository>();
+            builder.Services.AddDbContext<Context>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("cs"));
+            });
 
             var app = builder.Build();
 
