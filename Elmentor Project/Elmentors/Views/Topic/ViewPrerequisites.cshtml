@@ -1,0 +1,34 @@
+﻿@model List<Topic>
+
+<a asp-action="ViewTopics" class="btn btn-success">Back to Topics</a>
+<a asp-action="AddPrerequisites" asp-route-id="@ViewBag.TopicId" class="btn btn-success">Add New Prerequisites</a>
+@if (Model == null || !Model.Any())
+{
+    <p class="text-danger">There's NO Prerequisites.</p>
+}
+else
+{
+    <table class="table table-bordered table-hover table-light">
+        <thead>
+            <tr>
+                <th>Prerequisites Name</th>
+                <th>Prerequisites Description</th>
+                <th>Delete Prerequisite</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var topic in Model)
+            {
+                <tr>
+                    <td>@topic?.Name</td>
+                    <td>@topic?.Description</td>
+                    <td>
+                        <a asp-action="DeletePrerequisite" asp-route-TopicId="@ViewBag.TopicId" asp-route-PrerequisiteId="@topic.Id" class="btn btn-success">
+                            Delete Prerequisite
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

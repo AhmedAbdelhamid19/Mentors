@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "AddDependencesFromExists";
+    SelectList Dep = new SelectList(ViewBag.alltopics, "Id", "Name");
+    // (List of items that will appear in select option, item.Id will be sent as value to controller, item.Name => will view to user)
+}
+
+<a asp-action="ViewDependences" asp-route-Id="@ViewBag.TopicId" class="btn btn-success">Go Back to Dependences</a>
+<h1>Add Dependences From Exists Topics</h1>
+
+<form asp-action="SaveDependencesFromExists" method="post">
+    <label class="form-label">Select a Dependent Topic</label>
+
+    <select asp-items="Dep" name="DependentId" class="form form-control">
+        <option value="0"> ---select Dependency---</option>
+    </select>
+    @if (ViewData.ModelState["DependentId"]?.Errors.Count > 0)
+    { 
+        <span class="text-danger">@ViewData.ModelState["DependentId"].Errors[0].ErrorMessage</span>
+    }
+    <input type="hidden" name="TopicId" value="@ViewBag.TopicId" />
+    <button type="submit" class="btn btn-success">Add Dependency</button>
+</form>
+
+

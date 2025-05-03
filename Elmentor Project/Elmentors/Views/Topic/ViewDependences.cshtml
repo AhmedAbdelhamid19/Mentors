@@ -1,0 +1,35 @@
+﻿@model List<Topic>
+
+<a asp-action="ViewTopics" class="btn btn-success">Back to Topics</a>
+<a asp-action="AddDependences" asp-route-Id="@ViewBag.TopicId" class="btn btn-success">Add New Dependences to This Topic</a>
+@if (Model == null || !Model.Any())
+{
+    <p class="text-danger"> There's No Dependences.</p>
+}
+else
+{
+    <table class="table table-bordered table-hover table-light">
+        <thead> 
+            <tr>
+                <th>Dependences Name</th>
+                <th>Dependences Description</th>
+                <th>Delete Dependent</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var topic in Model)
+            { 
+                <tr>
+                    <td>@topic.Name</td>
+                    <td>@topic.Description</td>
+                    <td>
+                        <a asp-action="DeleteDependence" asp-route-TopicId="@ViewBag.TopicId" asp-route-DependentId="@topic.Id" class="btn btn-success">
+                            Delete Dependence
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+

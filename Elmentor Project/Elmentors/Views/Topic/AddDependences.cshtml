@@ -1,0 +1,26 @@
+﻿@model Topic
+
+<a asp-action="ViewDependences" asp-route-Id="@ViewBag.TopicId" class="btn btn-success">Go Back to Dependences</a>
+<a asp-action="AddDependencesFromExists" asp-route-Id="@ViewBag.TopicId" class="btn btn-success"> Add From Exists Topics</a>
+<form asp-action="SaveDependences" method="post">
+    <div>
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <input type="hidden" name="TopicId" value="@ViewBag.TopicId" />
+
+    <button type="submit" class="btn btn-success">Save Topic</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    } 
+}
