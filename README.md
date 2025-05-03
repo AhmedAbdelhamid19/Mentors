@@ -6,4 +6,5 @@ ASP.NET MVC web application that bridges the gap between students seeking academ
 ### - mentor can add discount for his service too
 ### - mentor should provide way to contact
 ### - mentor must verfy his knowlege and experience
+### - it's the responsibility of the student to check that the mentor deserve the payment
 
