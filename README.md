@@ -3,8 +3,7 @@ ASP.NET MVC web application that bridges the gap between students seeking academ
 
 
 ## Features with priority 
-    - Dependencies feature
-    - Edit feature
+    - Edit Topic feature
 
 ## Feature Will be Added soon
 ### - mentor can add price for his service
