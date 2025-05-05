@@ -10,7 +10,7 @@ else
 {
     <table class="table table-bordered table-hover table-light">
         <thead>
-            <tr>
+            <tr id="Row1HeadTable">
                 <th>Topic Name</th>
                 <th>Topic Description</th>
                 <th>View Prerequisites</th>
@@ -22,7 +22,7 @@ else
         <tbody>
             @foreach (Topic topic in Model)
             {
-                <tr>
+                <tr id="rowBody">
                     <td>@topic?.Name</td>
                     <td>@topic?.Description</td>
                     <td>

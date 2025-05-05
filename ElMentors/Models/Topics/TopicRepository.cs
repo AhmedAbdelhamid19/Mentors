@@ -1,15 +1,17 @@
 ﻿using ElMentors.Models.Topics;
 using ElMentors.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Elmentors.Repository
 {
     public class TopicRepository: ITopicRepository
     {
-        public Context context { get; set; }
+        private Context context { get; set; }
         public TopicRepository(Context context)
         {
             this.context = context;
         }
+
         public void Add(Topic topic)
         {
             context.Add(topic);
@@ -33,60 +35,63 @@ namespace Elmentors.Repository
 
             topic.Prerequisites.Add(Pre);
         }
+
         public void Update(Topic topic)
         {
-            context.Update(topic);
-        }
-        public void Update(int id)
-        {
-            Topic topic = GetById(id);
-            context.Update(topic);
-        }
-        public void Remove(Topic topic)
-        {
-            List<Topic> AllTopics = GetAll();
-            foreach(Topic curTopic in AllTopics)
+            Topic? newTopic = context.Topic
+                .Include(t => t.Prerequisites)
+                .Include(t => t.Dependents)
+                .FirstOrDefault(t => t.Id == topic.Id);
+
+            if(newTopic != null)
             {
-                LoadDependent(curTopic);
-                LoadPrerequisites(curTopic);
-                if(curTopic.Dependents.Contains(topic))
-                {
-                    curTopic.Dependents.Remove(topic);
-                }
-                if(curTopic.Prerequisites.Contains(topic))
-                {
-                    curTopic.Prerequisites.Remove(topic);
-                }
+                newTopic.Name = topic.Name;
+                newTopic.Description = topic.Description;
             }
-            context.Remove(topic);
         }
+
         public void Remove(int id)
         {
             Topic topic = GetById(id);
+            LoadDependent(topic);
+            LoadPrerequisites(topic);
+            foreach(Topic depTopic in topic.Dependents)
+            {
+                depTopic.Prerequisites.Remove(topic);
+            }
+            foreach(Topic preTopic in topic.Prerequisites)
+            {
+                preTopic.Dependents.Remove(topic);
+            }
             context.Remove(topic);
         }
         public void RemovePrerequisite(int TopicId, int PrerequisiteId)
         {
-            Topic topic = GetById(TopicId);
+            Topic? topic = GetById(TopicId);
             LoadPrerequisites(topic);
             Topic? Prerequisite = topic.Prerequisites?.FirstOrDefault(x => x.Id == PrerequisiteId);
-            topic.Prerequisites.Remove(Prerequisite);
+            if(Prerequisite != null)
+                topic?.Prerequisites?.Remove(Prerequisite);
         }
         public void RemoveDependent(int TopicId, int DependentId)
         {
-            Topic topic = GetById(TopicId);
+            Topic? topic = GetById(TopicId);
             LoadDependent(topic);
             Topic? Dependent = topic.Dependents?.FirstOrDefault(x => x.Id == DependentId);
-            topic.Dependents.Remove(Dependent);
+            if(Dependent != null)
+                topic?.Dependents?.Remove(Dependent);
         }
+
         public List<Topic> GetAll()
         {
             return context.Topic.ToList();
         }
         public Topic GetById(int Id)
         {
-            return context.Topic.FirstOrDefault(t => t.Id == Id);
+            Topic? topic = context.Topic.FirstOrDefault(t => t.Id == Id);
+            return topic;
         }
+
         public void LoadPrerequisites(Topic topic)
         {
             if (topic != null)
@@ -101,6 +106,7 @@ namespace Elmentors.Repository
                 context.Entry(topic).Collection(t => t.Dependents).Load();
             }
         }
+
         public void Save()
         {
             context.SaveChanges();

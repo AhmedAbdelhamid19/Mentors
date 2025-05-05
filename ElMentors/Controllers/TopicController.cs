@@ -12,13 +12,10 @@ namespace ElMentors.Controllers
         {
             this.topicRepository = topicRepository;
         }
-
-
         public IActionResult ViewTopics()
         {
             return View("ViewTopics", topicRepository.GetAll());
         }
-
         [HttpGet]
         public IActionResult AddTopic()
         {
@@ -36,7 +33,6 @@ namespace ElMentors.Controllers
             ViewBag.TopicId = Id;
             return View("AddPrerequisites");
         }
-
         [HttpPost]
         public IActionResult SaveTopic(Topic topic)
         {
@@ -72,5 +68,24 @@ namespace ElMentors.Controllers
             return View("AddPrerequisites", Pre);
         }
 
+        public IActionResult EditTopic(int id)
+        {
+            Topic topic = topicRepository.GetById(id);
+            return View("EditTopic", topic);
+        }
+        [HttpPost]
+        public IActionResult SaveEdit(Topic topic)
+        {
+            topicRepository.Update(topic);;
+            topicRepository.Save();
+            return RedirectToAction("ViewTopics");
+        }
+        public IActionResult DeleteTopic(int id)
+        {
+            topicRepository.Remove(id);
+            topicRepository.Save();
+
+            return RedirectToAction("ViewTopics");
+        }
     }
 }

@@ -9,8 +9,6 @@ namespace Elmentors.Repository
         public void AddDependent(Topic Dep, int TopicId);
         public void AddPrerequisite(Topic Pre, int TopicId);
         public void Update(Topic topic);
-        public void Update(int id);
-        public void Remove(Topic topic);
         public void Remove(int id);
         public void RemovePrerequisite(int TopicId, int PrerequisiteId);
         public void RemoveDependent(int TopicId, int DependentId);
