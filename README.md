@@ -1,6 +1,12 @@
 # Mentors
 ASP.NET MVC web application that bridges the gap between students seeking academic or career guidance and mentors who are ready to help.
 
+
+## Features with priority 
+    1- View Prerequisites
+    2- View Dependencies
+    3- Edit Topic
+
 ## Feature Will be Added soon
 ### - mentor can add price for his service
 ### - mentor can add discount for his service too
