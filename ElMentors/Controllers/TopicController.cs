@@ -108,9 +108,12 @@ namespace ElMentors.Controllers
             topicRepository.Save();
             return RedirectToAction("ViewTopics");
         }
-        public IActionResult DeleteTopic(int id)
+
+
+
+        public IActionResult DeleteTopic(int TopicId)
         {
-            topicRepository.Remove(id);
+            topicRepository.Remove(TopicId);
             topicRepository.Save();
 
             return RedirectToAction("ViewTopics");

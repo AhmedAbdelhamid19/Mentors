@@ -62,24 +62,20 @@ namespace Elmentors.Repository
             Topic topic = GetById(id);
             LoadDependent(topic);
             LoadPrerequisites(topic);
-            foreach(Topic depTopic in topic.Dependents)
+            foreach (Topic depTopic in topic.Dependents)
             {
+                LoadPrerequisites(depTopic);
                 depTopic.Prerequisites.Remove(topic);
             }
             foreach(Topic preTopic in topic.Prerequisites)
             {
+                LoadDependent(preTopic);
                 preTopic.Dependents.Remove(topic);
             }
             context.Remove(topic);
         }
         public void RemovePrerequisite(int TopicId, int PrerequisiteId)
         {
-            //Topic? topic = GetById(TopicId);
-            //LoadPrerequisites(topic);
-            //Topic? Prerequisite = topic.Prerequisites?.FirstOrDefault(x => x.Id == PrerequisiteId);
-            //if(Prerequisite != null)
-            //    topic?.Prerequisites?.Remove(Prerequisite);
-
 			Topic? topic = GetById(TopicId);
             Topic? preTopic = GetById(PrerequisiteId);
 			if (topic != null && preTopic != null) { 
@@ -89,17 +85,10 @@ namespace Elmentors.Repository
                 topic?.Prerequisites?.Remove(preTopic);
                 preTopic?.Dependents?.Remove(topic);
             }
-
 		}
 
         public void RemoveDependent(int TopicId, int DependentId)
         {
-            //Topic? topic = GetById(TopicId);
-            //LoadDependent(topic);
-            //Topic? Dependent = topic.Dependents?.FirstOrDefault(x => x.Id == DependentId);
-            //if(Dependent != null)
-            //    topic?.Dependents?.Remove(Dependent);
-
 			Topic? topic = GetById(TopicId);
             Topic? depTopic = GetById(DependentId);
             if(topic != null && depTopic != null)
