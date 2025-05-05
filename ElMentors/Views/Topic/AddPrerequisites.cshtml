@@ -1,0 +1,22 @@
+﻿@model List<Topic>
+@{
+    SelectList Dep = new SelectList(Model, "Id", "Name");
+}
+
+<a asp-action="ViewPrerequisites" asp-route-TopicId="@ViewBag.TopicId" class="btn btn-success">
+    Back to Prerequisite
+</a>
+
+<form asp-action="SavePrerequisites" method="post">
+    <label class="form-label">Select a Prerequisite Topic</label>
+
+    <select asp-items="Dep" name="preId" class="form form-control">
+        <option value="0"> ---select Prerequisite---</option>
+    </select>
+    @if (ViewData.ModelState["PrerequisiteId"]?.Errors.Count > 0)
+    {
+        <span class="text-danger">@ViewData.ModelState["PrerequisiteId"].Errors[0].ErrorMessage</span>
+    }
+    <input type="hidden" name="TopicId" value="@ViewBag.TopicId" />
+    <input type="submit" class="btn btn-success"> </>
+</form>

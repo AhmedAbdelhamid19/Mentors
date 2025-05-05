@@ -1,6 +1,7 @@
 ﻿using ElMentors.Models.Topics;
 using ElMentors.Models;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 
 namespace Elmentors.Repository
 {
@@ -21,19 +22,25 @@ namespace Elmentors.Repository
             Topic topic = GetById(id);
             context.Add(topic);
         }
-        public void AddDependent(Topic Dep, int TopicId)
+        public void AddDependent(int depId, int TopicId)
         {
+            Topic depTopic = GetById(depId);
             Topic topic = GetById(TopicId);
             LoadDependent(topic);
-
-            topic.Dependents.Add(Dep);
-        }
-        public void AddPrerequisite(Topic Pre, int TopicId)
+            LoadPrerequisites(depTopic);
+            topic.Dependents.Add(depTopic);
+            depTopic.Prerequisites.Add(topic);
+		}
+        public void AddPrerequisite(int preId, int TopicId)
         {
+            Topic preTopic = GetById(preId);
             Topic topic = GetById(TopicId);
-            LoadPrerequisites(topic);
 
-            topic.Prerequisites.Add(Pre);
+            LoadPrerequisites(topic);
+            LoadDependent(preTopic);
+
+            topic.Prerequisites.Add(preTopic);
+            preTopic.Dependents.Add(topic);
         }
 
         public void Update(Topic topic)
@@ -67,20 +74,43 @@ namespace Elmentors.Repository
         }
         public void RemovePrerequisite(int TopicId, int PrerequisiteId)
         {
-            Topic? topic = GetById(TopicId);
-            LoadPrerequisites(topic);
-            Topic? Prerequisite = topic.Prerequisites?.FirstOrDefault(x => x.Id == PrerequisiteId);
-            if(Prerequisite != null)
-                topic?.Prerequisites?.Remove(Prerequisite);
-        }
+            //Topic? topic = GetById(TopicId);
+            //LoadPrerequisites(topic);
+            //Topic? Prerequisite = topic.Prerequisites?.FirstOrDefault(x => x.Id == PrerequisiteId);
+            //if(Prerequisite != null)
+            //    topic?.Prerequisites?.Remove(Prerequisite);
+
+			Topic? topic = GetById(TopicId);
+            Topic? preTopic = GetById(PrerequisiteId);
+			if (topic != null && preTopic != null) { 
+			    LoadPrerequisites(topic);
+                LoadDependent(preTopic);
+
+                topic?.Prerequisites?.Remove(preTopic);
+                preTopic?.Dependents?.Remove(topic);
+            }
+
+		}
+
         public void RemoveDependent(int TopicId, int DependentId)
         {
-            Topic? topic = GetById(TopicId);
-            LoadDependent(topic);
-            Topic? Dependent = topic.Dependents?.FirstOrDefault(x => x.Id == DependentId);
-            if(Dependent != null)
-                topic?.Dependents?.Remove(Dependent);
-        }
+            //Topic? topic = GetById(TopicId);
+            //LoadDependent(topic);
+            //Topic? Dependent = topic.Dependents?.FirstOrDefault(x => x.Id == DependentId);
+            //if(Dependent != null)
+            //    topic?.Dependents?.Remove(Dependent);
+
+			Topic? topic = GetById(TopicId);
+            Topic? depTopic = GetById(DependentId);
+            if(topic != null && depTopic != null)
+            {
+			    LoadDependent(topic);
+                LoadPrerequisites(depTopic);
+
+                topic?.Dependents?.Remove(depTopic);
+                depTopic?.Prerequisites?.Remove(topic);
+			}
+		}
 
         public List<Topic> GetAll()
         {
