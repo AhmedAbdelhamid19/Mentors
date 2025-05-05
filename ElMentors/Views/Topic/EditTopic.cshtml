@@ -1,0 +1,23 @@
+﻿@model Topic
+
+@{
+    ViewData["Title"] = "EditTopic";
+}
+
+<a asp-action="ViewTopics" class="btn btn-success" id="Back">
+    Back
+</a>
+
+<h1>EditTopic</h1>
+<form asp-action="SaveEdit" method="post">
+    <label asp-for="Name" class="form-label"></label>
+    <input asp-for="Name" class="form-control" value="@Model.Name" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+
+    <label asp-for="Description" class="form-label"></label>
+    <textarea asp-for="Description" class="form-control"></textarea>
+    <span asp-validation-for="Description" class="text-danger"></span>
+
+    <input type="hidden" name="Id" value="@Model.Id" />
+    <button type="submit" class="btn btn-success">Save Edit</button>
+</form>

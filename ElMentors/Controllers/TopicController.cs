@@ -104,8 +104,9 @@ namespace ElMentors.Controllers
         [HttpPost]
         public IActionResult SaveEdit(Topic topic)
         {
-            topicRepository.Update(topic);;
+            topicRepository.Update(topic);
             topicRepository.Save();
+
             return RedirectToAction("ViewTopics");
         }
 
