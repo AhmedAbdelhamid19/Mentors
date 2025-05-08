@@ -1,7 +1,9 @@
 using Elmentors.Repository;
-using ElMentors.Models;
+using ElMentors.Models.Account;
+using ElMentors.Models.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.CodeAnalysis.Options;
 
 namespace ElMentors
 {
@@ -18,6 +20,13 @@ namespace ElMentors
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("cs"));
             });
+            builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(option =>
+            {
+                option.Password.RequiredLength = 4;
+                option.Password.RequireNonAlphanumeric = false;
+                option.Password.RequireUppercase = false;
+                option.Password.RequireDigit = false;
+            }).AddEntityFrameworkStores<Context>();
 
             var app = builder.Build();
 

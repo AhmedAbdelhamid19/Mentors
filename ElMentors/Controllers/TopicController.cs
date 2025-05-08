@@ -1,9 +1,12 @@
 ﻿using Elmentors.Repository;
 using ElMentors.Models.Topics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace ElMentors.Controllers
 {
+    [Authorize]
     public class TopicController : Controller
     {
         public ITopicRepository topicRepository { get; set; }
@@ -12,10 +15,14 @@ namespace ElMentors.Controllers
         {
             this.topicRepository = topicRepository;
         }
+
+        [HttpGet]
         public IActionResult ViewTopics()
         {
             return View("ViewTopics", topicRepository.GetAll());
         }
+
+        [HttpGet]
         public IActionResult ViewDependences(int TopicId)
         {
             Topic topic = topicRepository.GetById(TopicId);
@@ -23,6 +30,8 @@ namespace ElMentors.Controllers
             ViewBag.TopicId = TopicId;
             return View("ViewDependences", topic.Dependents.ToList());
         }
+
+        [HttpGet]
         public IActionResult ViewPrerequisites(int TopicId)
         {
             Topic topic = topicRepository.GetById(TopicId);
@@ -30,11 +39,13 @@ namespace ElMentors.Controllers
             ViewBag.TopicId = TopicId;
             return View("ViewPrerequisites", topic.Prerequisites.ToList());
         }
+
         [HttpGet]
         public IActionResult AddTopic()
         {
             return View("AddTopic");
         }
+
         [HttpGet]
         public IActionResult AddDependences(int TopicId)
         {
@@ -45,6 +56,7 @@ namespace ElMentors.Controllers
             ViewBag.TopicId = TopicId;
             return View("AddDependences", topicList);
         }
+
         [HttpGet]
         public IActionResult AddPrerequisites(int TopicId)
         {
@@ -55,6 +67,7 @@ namespace ElMentors.Controllers
             ViewBag.TopicId = TopicId;
             return View("AddPrerequisites", topicList);
         }
+
         [HttpPost]
         public IActionResult SaveTopic(Topic topic)
         {
@@ -66,6 +79,7 @@ namespace ElMentors.Controllers
             }
             return View("AddTopic", topic);
         }
+
         [HttpPost]
         public IActionResult SaveDependences(int depId, int TopicId)
         {
@@ -81,6 +95,8 @@ namespace ElMentors.Controllers
 
 			return RedirectToAction("ViewDependences", new { TopicId = TopicId });
 		}
+
+        [HttpPost]
         public IActionResult SavePrerequisites(int preId, int TopicId)
         {
             if(preId == 0)
@@ -96,12 +112,14 @@ namespace ElMentors.Controllers
             return RedirectToAction("ViewPrerequisites", new { TopicId = TopicId});
         }
 
+        [HttpGet]
         public IActionResult EditTopic(int id)
         {
             Topic topic = topicRepository.GetById(id);
             return View("EditTopic", topic);
         }
-        [HttpPost]
+
+
         public IActionResult SaveEdit(Topic topic)
         {
             topicRepository.Update(topic);
@@ -110,8 +128,6 @@ namespace ElMentors.Controllers
             return RedirectToAction("ViewTopics");
         }
 
-
-
         public IActionResult DeleteTopic(int TopicId)
         {
             topicRepository.Remove(TopicId);
@@ -119,6 +135,7 @@ namespace ElMentors.Controllers
 
             return RedirectToAction("ViewTopics");
         }
+
 		public IActionResult DeletePrerequisite(int TopicId, int PrerequisiteId)
 		{
 			topicRepository.RemovePrerequisite(TopicId, PrerequisiteId);
@@ -126,12 +143,14 @@ namespace ElMentors.Controllers
 
 			return RedirectToAction("ViewPrerequisites", new { TopicId = TopicId });
 		}
-		public IActionResult DeleteDependence(int TopicId, int DependentId)
+
+        public IActionResult DeleteDependence(int TopicId, int DependentId)
 		{
 			topicRepository.RemoveDependent(TopicId, DependentId);
 			topicRepository.Save();
 
 			return RedirectToAction("ViewDependences", new { TopicId = TopicId });
 		}
+
 	}
 }

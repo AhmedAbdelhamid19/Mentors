@@ -1,7 +1,7 @@
 ﻿using ElMentors.Models.Topics;
-using ElMentors.Models;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
+using ElMentors.Models.Context;
 
 namespace Elmentors.Repository
 {

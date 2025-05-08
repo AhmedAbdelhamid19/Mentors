@@ -7,12 +7,37 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Topic\Dependences\**" />
+    <Compile Remove="Views\Topic\Prerequisites\**" />
+    <Compile Remove="Views\Topic\Topics\**" />
+    <Content Remove="Views\Topic\Dependences\**" />
+    <Content Remove="Views\Topic\Prerequisites\**" />
+    <Content Remove="Views\Topic\Topics\**" />
+    <EmbeddedResource Remove="Views\Topic\Dependences\**" />
+    <EmbeddedResource Remove="Views\Topic\Prerequisites\**" />
+    <EmbeddedResource Remove="Views\Topic\Topics\**" />
+    <None Remove="Views\Topic\Dependences\**" />
+    <None Remove="Views\Topic\Prerequisites\**" />
+    <None Remove="Views\Topic\Topics\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.15" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.15" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.15" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.15">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Filter\Action Filters\" />
+    <Folder Include="Filter\Exception Filters\" />
+    <Folder Include="Filter\Authorization Filters\" />
+    <Folder Include="Filter\Resource Filters\" />
+    <Folder Include="Filter\Result Filters\" />
   </ItemGroup>
 
 </Project>

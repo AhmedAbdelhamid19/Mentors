@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ElMentors.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20250503190440_init")]
-    partial class init
+    [Migration("20250508012126_InitialIdentity")]
+    partial class InitialIdentity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,7 @@ namespace ElMentors.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ElMentors.Models.Topic", b =>
+            modelBuilder.Entity("ElMentors.Models.Topics.Topic", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -64,13 +64,13 @@ namespace ElMentors.Migrations
 
             modelBuilder.Entity("TopicTopic", b =>
                 {
-                    b.HasOne("ElMentors.Models.Topic", null)
+                    b.HasOne("ElMentors.Models.Topics.Topic", null)
                         .WithMany()
                         .HasForeignKey("DependentsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ElMentors.Models.Topic", null)
+                    b.HasOne("ElMentors.Models.Topics.Topic", null)
                         .WithMany()
                         .HasForeignKey("PrerequisitesId")
                         .OnDelete(DeleteBehavior.ClientCascade)
