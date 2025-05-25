@@ -4,6 +4,7 @@ ASP.NET MVC web application that bridges the gap between students seeking academ
 
 ## Features with priority 
     -
+    -
 ## Feature Will be Added soon
 ### - mentor can add price for his service
 ### - mentor can add discount for his service too
