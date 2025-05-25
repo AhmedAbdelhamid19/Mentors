@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ElMentors.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20250508110231_Identity")]
-    partial class Identity
+    [Migration("20250524105309_constrain")]
+    partial class constrain
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -115,6 +115,56 @@ namespace ElMentors.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("ElMentors.Models.Tests.Test", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
+
+                    b.Property<int?>("Test2FK")
+                        .HasColumnType("int");
+
+                    b.Property<string>("zong")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Test2FK");
+
+                    b.ToTable("Test");
+
+                    b.HasDiscriminator().HasValue("Test");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("ElMentors.Models.Tests.Test2", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Test2");
                 });
 
             modelBuilder.Entity("ElMentors.Models.Topics.Topic", b =>
@@ -259,6 +309,25 @@ namespace ElMentors.Migrations
                     b.HasIndex("PrerequisitesId");
 
                     b.ToTable("TopicTopic");
+                });
+
+            modelBuilder.Entity("ElMentors.Models.Tests.TestChild", b =>
+                {
+                    b.HasBaseType("ElMentors.Models.Tests.Test");
+
+                    b.Property<double>("Speed")
+                        .HasColumnType("float");
+
+                    b.HasDiscriminator().HasValue("TestChild");
+                });
+
+            modelBuilder.Entity("ElMentors.Models.Tests.Test", b =>
+                {
+                    b.HasOne("ElMentors.Models.Tests.Test2", "Test2")
+                        .WithMany()
+                        .HasForeignKey("Test2FK");
+
+                    b.Navigation("Test2");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

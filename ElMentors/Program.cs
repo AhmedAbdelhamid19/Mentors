@@ -4,6 +4,7 @@ using ElMentors.Models.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.CodeAnalysis.Options;
+using System.Text.Json.Serialization;
 
 namespace ElMentors
 {
@@ -27,7 +28,10 @@ namespace ElMentors
                 option.Password.RequireUppercase = false;
                 option.Password.RequireDigit = false;
             }).AddEntityFrameworkStores<Context>();
-
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

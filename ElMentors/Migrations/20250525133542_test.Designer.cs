@@ -4,6 +4,7 @@ using ElMentors.Models.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ElMentors.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20250525133542_test")]
+    partial class test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -112,21 +115,6 @@ namespace ElMentors.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("ElMentors.Models.Tests.MidTest", b =>
-                {
-                    b.Property<int>("Test1Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Test2Id")
-                        .HasColumnType("int");
-
-                    b.HasKey("Test1Id", "Test2Id");
-
-                    b.HasIndex("Test2Id");
-
-                    b.ToTable("MidTests");
                 });
 
             modelBuilder.Entity("ElMentors.Models.Tests.Test1", b =>
@@ -290,6 +278,21 @@ namespace ElMentors.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Test1Test2", b =>
+                {
+                    b.Property<int>("Tests1Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Tests2Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("Tests1Id", "Tests2Id");
+
+                    b.HasIndex("Tests2Id");
+
+                    b.ToTable("Test1Test2");
+                });
+
             modelBuilder.Entity("TopicTopic", b =>
                 {
                     b.Property<int>("DependentsId")
@@ -303,25 +306,6 @@ namespace ElMentors.Migrations
                     b.HasIndex("PrerequisitesId");
 
                     b.ToTable("TopicTopic");
-                });
-
-            modelBuilder.Entity("ElMentors.Models.Tests.MidTest", b =>
-                {
-                    b.HasOne("ElMentors.Models.Tests.Test1", "Test1")
-                        .WithMany("mids")
-                        .HasForeignKey("Test1Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ElMentors.Models.Tests.Test2", "Test2")
-                        .WithMany("mids")
-                        .HasForeignKey("Test2Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Test1");
-
-                    b.Navigation("Test2");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -375,6 +359,21 @@ namespace ElMentors.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Test1Test2", b =>
+                {
+                    b.HasOne("ElMentors.Models.Tests.Test1", null)
+                        .WithMany()
+                        .HasForeignKey("Tests1Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ElMentors.Models.Tests.Test2", null)
+                        .WithMany()
+                        .HasForeignKey("Tests2Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("TopicTopic", b =>
                 {
                     b.HasOne("ElMentors.Models.Topics.Topic", null)
@@ -388,16 +387,6 @@ namespace ElMentors.Migrations
                         .HasForeignKey("PrerequisitesId")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ElMentors.Models.Tests.Test1", b =>
-                {
-                    b.Navigation("mids");
-                });
-
-            modelBuilder.Entity("ElMentors.Models.Tests.Test2", b =>
-                {
-                    b.Navigation("mids");
                 });
 #pragma warning restore 612, 618
         }

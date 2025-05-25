@@ -5,7 +5,7 @@
 namespace ElMentors.Migrations
 {
     /// <inheritdoc />
-    public partial class Identity : Migration
+    public partial class inti : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

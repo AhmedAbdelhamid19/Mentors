@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ElMentors.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20250508110050_in")]
-    partial class @in
+    [Migration("20250523112216_inti")]
+    partial class inti
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -115,6 +115,49 @@ namespace ElMentors.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("ElMentors.Models.Tests.Test2", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Test2");
+                });
+
+            modelBuilder.Entity("ElMentors.Models.Tests.TestChild", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Speed")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("Test2FK")
+                        .HasColumnType("int");
+
+                    b.Property<string>("zing")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Test2FK");
+
+                    b.ToTable("Child");
                 });
 
             modelBuilder.Entity("ElMentors.Models.Topics.Topic", b =>
@@ -259,6 +302,15 @@ namespace ElMentors.Migrations
                     b.HasIndex("PrerequisitesId");
 
                     b.ToTable("TopicTopic");
+                });
+
+            modelBuilder.Entity("ElMentors.Models.Tests.TestChild", b =>
+                {
+                    b.HasOne("ElMentors.Models.Tests.Test2", "Test2")
+                        .WithMany()
+                        .HasForeignKey("Test2FK");
+
+                    b.Navigation("Test2");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
