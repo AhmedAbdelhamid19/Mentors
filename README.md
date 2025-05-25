@@ -14,3 +14,7 @@ ASP.NET MVC web application that bridges the gap between students seeking academ
 ### - it's the responsibility of the student to check that the mentor deserve the payment
 ### - student can rate the mentor and system calc total rate of the mentor
 ### - mentor can add topics and skills that offer to students
+### - night mode
+### - pagination
+### - upload photo
+### - connect to aws
