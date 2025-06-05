@@ -5,7 +5,7 @@ ASP.NET MVC web application that bridges the gap between students seeking academ
 ## Features with priority 
     - mentors can upload it's photo
     - make pagination
-    - make night mode
+    - make Dark mode
 ## Feature Will be Added soon
 ### - mentor can add price for his service
 ### - mentor can add discount for his service too
@@ -17,7 +17,7 @@ ASP.NET MVC web application that bridges the gap between students seeking academ
 ### - search 
 ### - MCP 
 ### - api to other LLMs
-### - night mode
+### - Dark mode
 ### - pagination
 ### - upload photo
 ### - connect to aws
