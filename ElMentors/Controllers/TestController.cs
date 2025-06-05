@@ -17,17 +17,10 @@ namespace ElMentors.Controllers
         [HttpGet("test1")]
         public IActionResult Test1()
         {
-            Test1 t1 = new Test1() { Name = "Test1" };
-            Test2 t2 = new Test2() { Name = "Test2" };
-            MidTest mt = new MidTest()
-            {
-                Test1 = t1,
-                Test2 = t2
-            };
+             var query = context.Topic.Where(t => t.Id == 1).ToList();
+            int x = 1;
 
-            context.MidTests.Add(mt);
-            context.SaveChanges();
-            return Ok(t1);
+            return Ok(query);
         }
     }
 }

@@ -4,6 +4,7 @@ using ElMentors.Models.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ElMentors.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20250529094024_inhrits")]
+    partial class inhrits
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,8 +24,6 @@ namespace ElMentors.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.HasSequence("parentSequence");
 
             modelBuilder.Entity("ElMentors.Models.Account.ApplicationRole", b =>
                 {
@@ -163,23 +164,23 @@ namespace ElMentors.Migrations
                     b.ToTable("Test2");
                 });
 
-            modelBuilder.Entity("ElMentors.Models.Tests.parent", b =>
+            modelBuilder.Entity("ElMentors.Models.Tests.child1", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValueSql("NEXT VALUE FOR [parentSequence]");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseSequence(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Child1Property")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable((string)null);
-
-                    b.UseTpcMappingStrategy();
+                    b.ToTable("childs");
                 });
 
             modelBuilder.Entity("ElMentors.Models.Topics.Topic", b =>
@@ -324,26 +325,6 @@ namespace ElMentors.Migrations
                     b.HasIndex("PrerequisitesId");
 
                     b.ToTable("TopicTopic");
-                });
-
-            modelBuilder.Entity("ElMentors.Models.Tests.child1", b =>
-                {
-                    b.HasBaseType("ElMentors.Models.Tests.parent");
-
-                    b.Property<string>("Child1Property")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToTable("child1s");
-                });
-
-            modelBuilder.Entity("ElMentors.Models.Tests.child2", b =>
-                {
-                    b.HasBaseType("ElMentors.Models.Tests.parent");
-
-                    b.Property<string>("Child2Property")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToTable("child2s");
                 });
 
             modelBuilder.Entity("ElMentors.Models.Tests.MidTest", b =>

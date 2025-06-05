@@ -38,6 +38,8 @@ namespace ElMentors.Models.Context
                 .WithMany(t2 => t2.mids)
                 .HasForeignKey(mt => mt.Test2Id);
 
+            modelBuilder.Entity<parent>().UseTpcMappingStrategy();
+
             base.OnModelCreating(modelBuilder);
         }
 
@@ -45,5 +47,10 @@ namespace ElMentors.Models.Context
         public DbSet<Test1> Test1 { get; set; }
         public DbSet<Test2> Test2 { get; set; }
         public DbSet<MidTest> MidTests { get; set; }
+
+        public DbSet<parent> Parents { get; set; }
+        public DbSet<child1> child1s { get; set; }
+
+        public DbSet<child2> child2s { get; set; }
     }
 }

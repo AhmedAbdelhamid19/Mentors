@@ -22,4 +22,21 @@ namespace ElMentors.Models.Tests
         public string? Name { get; set; }
         public ICollection<MidTest>? mids { get; set; } = new HashSet<MidTest>();
     }
+
+
+    public abstract class parent
+    {
+        public int Id { get; set; }
+        public string? Name { get; set; }
+    }
+
+    public class child1 : parent
+    {
+        public string? Child1Property { get; set; }
+    }
+
+    public class child2 : parent
+    {
+        public string? Child2Property { get; set; }
+    }
 }
