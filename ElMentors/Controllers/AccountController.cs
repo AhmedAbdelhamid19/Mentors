@@ -2,6 +2,9 @@
 using ElMentors.Models.Account;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ElMentors.Controllers
 {
@@ -51,11 +54,13 @@ namespace ElMentors.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult AddRole()
         {
             return View();
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> SaveRole(string RoleName)
         {
             ApplicationRole role = new ApplicationRole();
@@ -82,7 +87,11 @@ namespace ElMentors.Controllers
                 bool flag = await userManager.CheckPasswordAsync(user, model.Password);
                 if(flag)
                 {
-                    List<Claim> claims = new List<Claim>() { new Claim("Handle", model.Handle) };
+                    var photoPath = user.PhotoPath ?? string.Empty;
+                    List<Claim> claims = new List<Claim>() {
+                        new Claim("Handle", model.Handle),
+                        new Claim("PhotoPath", photoPath)
+                    };
 
                     await signInManager.SignInWithClaimsAsync(user, model.RememberMe, claims);
                     //await signInManager.SignInAsync(user, model.RememberMe);
@@ -101,6 +110,75 @@ namespace ElMentors.Controllers
         {
             await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public IActionResult UploadPhoto()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadPhoto(IFormFile photo)
+        {
+            if (photo != null && photo.Length > 0)
+            {
+                var user = await userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return RedirectToAction("LogIn");
+                }
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+                var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(photo.FileName);
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await photo.CopyToAsync(stream);
+                }
+                user.PhotoPath = "/uploads/" + uniqueFileName;
+                await userManager.UpdateAsync(user);
+
+                // Update PhotoPath claim and re-sign in
+                var claims = new List<Claim>() {
+                    new Claim("Handle", user.UserName),
+                    new Claim("PhotoPath", user.PhotoPath ?? string.Empty)
+                };
+                await signInManager.SignOutAsync();
+                await signInManager.SignInWithClaimsAsync(user, isPersistent: false, claims);
+
+                ViewBag.Message = "Photo uploaded successfully!";
+                return View();
+            }
+            ViewBag.Message = "Please select a valid photo.";
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            var user = await userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("LogIn");
+            }
+            return View(user);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AssignRoleToUser(string UserId, string RoleName)
+        {
+            var user = await userManager.FindByIdAsync(UserId);
+            if (user != null && !string.IsNullOrEmpty(RoleName))
+            {
+                await userManager.AddToRoleAsync(user, RoleName);
+                TempData["Message"] = $"Role '{RoleName}' assigned to user '{user.UserName}'.";
+            }
+            return RedirectToAction("AddRole");
         }
     }
 }

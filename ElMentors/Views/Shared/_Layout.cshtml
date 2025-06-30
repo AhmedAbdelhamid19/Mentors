@@ -7,38 +7,185 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ElMentors.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        body { min-height: 100vh; background: #f8f9fa; }
+        .navbar {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-size: 1.1rem;
+            background: linear-gradient(90deg, #fff 60%, #e9f0fa 100%);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #0056b3 !important;
+        }
+        .navbar-nav .nav-link {
+            color: #0056b3 !important;
+            margin-right: 0.7rem;
+            border-radius: 0.4rem;
+            transition: background 0.2s, color 0.2s;
+        }
+        .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active {
+            background: #e9ecef;
+            color: #007bff !important;
+        }
+        .profile-pic {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid #007bff;
+            margin: 0 auto 0.5rem auto;
+            display: block;
+        }
+        .fa-user-circle {
+            margin-right: 0.5rem;
+        }
+        .fa-sign-out-alt {
+            font-size: 1.3em;
+        }
+        .sidebar {
+            min-height: 100vh;
+            background: #fff;
+            border-right: 1px solid #e5e5e5;
+            padding-top: 1.5rem;
+        }
+        .sidebar .nav-link {
+            color: #0056b3;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+        .sidebar .nav-link.active, .sidebar .nav-link:hover {
+            background: #e9ecef;
+            color: #007bff;
+            border-radius: 0.5rem;
+        }
+        .footer {
+            background: #fff;
+            border-top: 1px solid #e5e5e5;
+            padding: 1rem 0;
+            text-align: center;
+            color: #888;
+        }
+        @@media (max-width: 991.98px) {
+            .sidebar { min-height: auto; border-right: none; }
+        }
+    </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom box-shadow">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ElMentors</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand fw-bold" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="fas fa-graduation-cap me-2"></i>ElMentors
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                <div class="collapse navbar-collapse" id="mainNavbar">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Home</a></li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-controller="Topic" asp-action="ViewTopics">Topics</a></li>
+                        }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="AddRole">Add Role</a></li>
+                        }
+                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Privacy">Privacy</a></li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            var userPhoto = (User.Claims.FirstOrDefault(c => c.Type == "PhotoPath")?.Value) ?? string.Empty;
+                            <li class="nav-item d-flex align-items-center ms-3">
+                                @if (!string.IsNullOrEmpty(userPhoto) && userPhoto != "/images/default-profile.png")
+                                {
+                                    <img src="@userPhoto" alt="Profile" class="profile-pic" style="width:40px;height:40px;object-fit:cover;border-radius:50%;border:2px solid #007bff;" />
+                                }
+                                else
+                                {
+                                    <i class="fas fa-user-circle fa-2x text-secondary"></i>
+                                }
+                                <a class="nav-link text-danger ms-2" asp-controller="Account" asp-action="SignOut" title="Log Out"><i class="fas fa-sign-out-alt"></i></a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="SignUp">Sign Up</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="LogIn">Log In</a></li>
+                        }
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-lg-2 d-none d-lg-block sidebar">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    var userPhoto = (User.Claims.FirstOrDefault(c => c.Type == "PhotoPath")?.Value) ?? string.Empty;
+                    <div class="text-center mb-4">
+                        @if (!string.IsNullOrEmpty(userPhoto) && userPhoto != "/images/default-profile.png")
+                        {
+                            <img src="@userPhoto" alt="Profile" class="profile-pic mb-2" />
+                        }
+                        else
+                        {
+                            <i class="fas fa-user-circle fa-3x text-secondary mb-2"></i>
+                        }
+                        <div class="fw-semibold">@User.Identity.Name</div>
+                    </div>
+                }
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index"><i class="fas fa-home me-2"></i>Home</a></li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item"><a class="nav-link" asp-controller="Topic" asp-action="ViewTopics"><i class="fas fa-book me-2"></i>Topics</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="UploadPhoto"><i class="fas fa-image me-2"></i>Upload Photo</a></li>
+                    }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="AddRole"><i class="fas fa-user-shield me-2"></i>Add Role</a></li>
+                    }
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="Profile"><i class="fas fa-user me-2"></i>Profile</a></li>
+                        <li class="nav-item"><a class="nav-link text-danger" asp-controller="Account" asp-action="SignOut"><i class="fas fa-sign-out-alt me-2"></i>Log Out</a></li>
+                    }
+                    else
+                    {
+                        <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="SignUp"><i class="fas fa-user-plus me-2"></i>Sign Up</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="LogIn"><i class="fas fa-sign-in-alt me-2"></i>Log In</a></li>
+                    }
+                    <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Privacy"><i class="fas fa-shield-alt me-2"></i>Privacy</a></li>
+                </ul>
+            </nav>
+            <!-- Main Content -->
+            <main class="col-lg-10 ms-sm-auto px-4 py-4">
+                @RenderBody()
+            </main>
+        </div>
     </div>
-
-    <footer class="border-top footer text-muted">
+    <footer class="footer mt-auto">
         <div class="container">
-            &copy; 2025 - ElMentors - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="row align-items-center">
+                <div class="col-md-6 text-md-start text-center mb-2 mb-md-0">
+                    &copy; 2025 - ElMentors. Empowering students & mentors.
+                </div>
+                <div class="col-md-6 text-md-end text-center">
+                    <a asp-controller="Home" asp-action="Privacy" class="text-muted me-3">Privacy</a>
+                    <a href="#" class="text-muted me-3">Contact</a>
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        <a asp-controller="Account" asp-action="SignUp" class="text-muted me-3">Sign Up</a>
+                        <a asp-controller="Account" asp-action="LogIn" class="text-muted">Log In</a>
+                    }
+                </div>
+            </div>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

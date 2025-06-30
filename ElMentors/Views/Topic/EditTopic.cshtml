@@ -1,23 +1,30 @@
 ﻿@model Topic
 
 @{
-    ViewData["Title"] = "EditTopic";
+    ViewData["Title"] = "Edit Topic";
 }
 
-<a asp-action="ViewTopics" class="btn btn-success" id="Back">
-    Back
-</a>
-
-<h1>EditTopic</h1>
-<form asp-action="SaveEdit" method="post">
-    <label asp-for="Name" class="form-label"></label>
-    <input asp-for="Name" class="form-control" value="@Model.Name" />
-    <span asp-validation-for="Name" class="text-danger"></span>
-
-    <label asp-for="Description" class="form-label"></label>
-    <textarea asp-for="Description" class="form-control"></textarea>
-    <span asp-validation-for="Description" class="text-danger"></span>
-
-    <input type="hidden" name="Id" value="@Model.Id" />
-    <button type="submit" class="btn btn-success">Save Edit</button>
-</form>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card shadow-lg p-4">
+                <a asp-action="ViewTopics" class="btn btn-link mb-3 px-0">&larr; Back to Topics</a>
+                <h2 class="mb-4 text-center">Edit Topic</h2>
+                <form asp-action="SaveEdit" method="post">
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label"></label>
+                        <input asp-for="Name" class="form-control" value="@Model.Name" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="mb-4">
+                        <label asp-for="Description" class="form-label"></label>
+                        <textarea asp-for="Description" class="form-control">@Model.Description</textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <input type="hidden" name="Id" value="@Model.Id" />
+                    <button type="submit" class="btn btn-primary w-100 rounded-pill shadow-sm py-2">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

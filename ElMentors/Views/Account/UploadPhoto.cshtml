@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Upload Photo";
+}
+
+<h2 class="text-center mt-4">Upload Your Photo</h2>
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+        @if (ViewBag.Message != null)
+        {
+            <div class="alert alert-info">@ViewBag.Message</div>
+        }
+        <form asp-action="UploadPhoto" asp-controller="Account" method="post" enctype="multipart/form-data">
+            <div class="form-group mb-3">
+                <label for="photo" class="form-label">Choose a photo</label>
+                <input type="file" class="form-control" id="photo" name="photo" accept="image/*" required />
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Upload</button>
+        </form>
+        @if (User.Identity.IsAuthenticated && User.Identity.Name != null)
+        {
+            <!-- Optionally show the current photo if available -->
+            <!-- This requires passing the photo path from the controller if you want to show it here -->
+        }
+    </div>
+</div>
+
+<style>
+    .form-label {
+        font-weight: 500;
+    }
+    .btn-primary {
+        background: linear-gradient(90deg, #007bff 0%, #0056b3 100%);
+        border: none;
+    }
+    .btn-primary:hover {
+        background: linear-gradient(90deg, #0056b3 0%, #007bff 100%);
+    }
+</style> 

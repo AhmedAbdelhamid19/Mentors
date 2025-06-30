@@ -2,9 +2,12 @@
 <a asp-action="ViewTopics" class="btn btn-success" id="Back">
 	Back
 </a>
-<a asp-action="AddDependences" asp-route-TopicId="@ViewBag.TopicId" class="btn btn-success" id="Add">
-	Add Dependent
-</a>
+@if (User.IsInRole("Admin"))
+{
+	<a asp-action="AddDependences" asp-route-TopicId="@ViewBag.TopicId" class="btn btn-success" id="Add">
+		Add Dependent
+	</a>
+}
 
 @if (Model == null || !Model.Any())
 {
@@ -19,7 +22,10 @@ else
 			<tr id="Row1HeadTable">
 				<th>Dependent Name</th>
 				<th>Dependent Description</th>
-				<th>Delete Dependent</th>
+				@if (User.IsInRole("Admin"))
+				{
+					<th>Delete Dependent</th>
+				}
 			</tr>
 		</thead>
 
@@ -29,11 +35,14 @@ else
 				<tr id="rowBody">
 					<td>@topic?.Name</td>
 					<td>@topic?.Description</td>
-					<td>
-						<a asp-action="DeleteDependence" asp-route-TopicId="@ViewBag.TopicId" asp-route-DependentId="@topic?.Id" class="btn btn-success">
-							Delete Dependent
-						</a>
-					</td>
+					@if (User.IsInRole("Admin"))
+					{
+						<td>
+							<a asp-action="DeleteDependence" asp-route-TopicId="@ViewBag.TopicId" asp-route-DependentId="@topic?.Id" class="btn btn-danger">
+								Delete Dependent
+							</a>
+						</td>
+					}
 				</tr>
 			}
 		</tbody>

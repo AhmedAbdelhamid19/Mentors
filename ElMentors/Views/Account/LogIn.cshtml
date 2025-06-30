@@ -1,43 +1,61 @@
 ﻿@model ElMentors.Models.Account.LoginViewModel
 
 @{
-    ViewData["Title"] = "LogIn";
+    ViewData["Title"] = "Log In";
 }
 
-<h1>LogIn</h1>
-
-<h4>LoginViewModel</h4>
-
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="SaveLogIn" method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Handle" class="control-label"></label>
-                <input asp-for="Handle" class="form-control" />
-                <span asp-validation-for="Handle" class="text-danger"></span>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg p-4">
+                <h2 class="text-center mb-4">Welcome Back</h2>
+                <div class="d-flex justify-content-center mb-3">
+                    <a href="#" class="btn btn-outline-danger mx-2" title="Log in with Google"><i class="fab fa-google"></i></a>
+                    <a href="#" class="btn btn-outline-primary mx-2" title="Log in with Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="btn btn-outline-dark mx-2" title="Log in with GitHub"><i class="fab fa-github"></i></a>
+                </div>
+                <div class="text-center mb-3 text-muted">or use your account</div>
+                <form asp-action="SaveLogIn" method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Handle" class="form-label"></label>
+                        <input asp-for="Handle" class="form-control" placeholder="Username" />
+                        <span asp-validation-for="Handle" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Password" class="form-label"></label>
+                        <input asp-for="Password" class="form-control" type="password" placeholder="Password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group form-check mb-3">
+                        <input class="form-check-input" asp-for="RememberMe" />
+                        <label class="form-check-label" asp-for="RememberMe">Remember Me</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 rounded-pill shadow-sm py-2">Log In</button>
+                </form>
+                <div class="text-center mt-3">
+                    <span>Don't have an account?</span> <a href="/Account/SignUp" class="btn btn-link px-0">Sign Up</a>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="RememberMe" /> @Html.DisplayNameFor(model => model.RememberMe)
-                </label>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<!-- Font Awesome CDN for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<style>
+    .btn-outline-danger { color: #dc3545; border-color: #dc3545; }
+    .btn-outline-danger:hover { background: #dc3545; color: #fff; }
+    .btn-outline-primary { color: #0d6efd; border-color: #0d6efd; }
+    .btn-outline-primary:hover { background: #0d6efd; color: #fff; }
+    .btn-outline-dark { color: #212529; border-color: #212529; }
+    .btn-outline-dark:hover { background: #212529; color: #fff; }
+    .card { border-radius: 1rem; }
+    .form-label { font-weight: 500; }
+    .btn-primary { background: linear-gradient(90deg, #007bff 0%, #0056b3 100%); border: none; }
+    .btn-primary:hover { background: linear-gradient(90deg, #0056b3 0%, #007bff 100%); }
+</style>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

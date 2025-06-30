@@ -1,47 +1,67 @@
 ﻿@model ElMentors.Models.Account.SignUpViewModel
 
 @{
-    ViewData["Title"] = "SignUp";
+    ViewData["Title"] = "Sign Up";
 }
 
-<h1>SignUp</h1>
-
-<h4>SignUpViewModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="SaveSignUp" method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Handle" class="control-label"></label>
-                <input asp-for="Handle" class="form-control" />
-                <span asp-validation-for="Handle" class="text-danger"></span>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg p-4">
+                <h2 class="text-center mb-4">Create Your Account</h2>
+                <div class="d-flex justify-content-center mb-3">
+                    <a href="#" class="btn btn-outline-danger mx-2" title="Sign up with Google"><i class="fab fa-google"></i></a>
+                    <a href="#" class="btn btn-outline-primary mx-2" title="Sign up with Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="btn btn-outline-dark mx-2" title="Sign up with GitHub"><i class="fab fa-github"></i></a>
+                </div>
+                <div class="text-center mb-3 text-muted">or use your email to sign up</div>
+                <form asp-action="SaveSignUp" method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Handle" class="form-label"></label>
+                        <input asp-for="Handle" class="form-control" placeholder="Username" />
+                        <span asp-validation-for="Handle" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Email" class="form-label"></label>
+                        <input asp-for="Email" class="form-control" placeholder="Email" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Password" class="form-label"></label>
+                        <input asp-for="Password" class="form-control" type="password" placeholder="Password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-4">
+                        <label asp-for="ConfirmPassword" class="form-label"></label>
+                        <input asp-for="ConfirmPassword" class="form-control" type="password" placeholder="Confirm Password" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100 rounded-pill shadow-sm py-2">Sign Up</button>
+                </form>
+                <div class="text-center mt-3">
+                    <span>Already have an account?</span> <a href="/Account/LogIn" class="btn btn-link px-0">Log In</a>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ConfirmPassword" class="control-label"></label>
-                <input asp-for="ConfirmPassword" class="form-control" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<!-- Font Awesome CDN for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<style>
+    .btn-outline-danger { color: #dc3545; border-color: #dc3545; }
+    .btn-outline-danger:hover { background: #dc3545; color: #fff; }
+    .btn-outline-primary { color: #0d6efd; border-color: #0d6efd; }
+    .btn-outline-primary:hover { background: #0d6efd; color: #fff; }
+    .btn-outline-dark { color: #212529; border-color: #212529; }
+    .btn-outline-dark:hover { background: #212529; color: #fff; }
+    .card { border-radius: 1rem; }
+    .form-label { font-weight: 500; }
+    .btn-success { background: linear-gradient(90deg, #28a745 0%, #218838 100%); border: none; }
+    .btn-success:hover { background: linear-gradient(90deg, #218838 0%, #28a745 100%); }
+</style>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

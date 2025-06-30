@@ -48,6 +48,7 @@ namespace ElMentors.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult AddDependences(int TopicId)
         {
             List<Topic> topicList = topicRepository.GetAll();
@@ -55,10 +56,12 @@ namespace ElMentors.Controllers
             topicList.Remove(topic);
 
             ViewBag.TopicId = TopicId;
+            ViewBag.Name = "ahmed";
             return View("AddDependences", topicList);
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult AddPrerequisites(int TopicId)
         {
             List<Topic> topicList = topicRepository.GetAll();
@@ -82,6 +85,7 @@ namespace ElMentors.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult SaveDependences(int depId, int TopicId)
         {
             if(depId == 0)
@@ -98,6 +102,7 @@ namespace ElMentors.Controllers
 		}
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult SavePrerequisites(int preId, int TopicId)
         {
             if(preId == 0)
@@ -137,6 +142,7 @@ namespace ElMentors.Controllers
             return RedirectToAction("ViewTopics");
         }
 
+		[Authorize(Roles = "Admin")]
 		public IActionResult DeletePrerequisite(int TopicId, int PrerequisiteId)
 		{
 			topicRepository.RemovePrerequisite(TopicId, PrerequisiteId);
@@ -145,6 +151,7 @@ namespace ElMentors.Controllers
 			return RedirectToAction("ViewPrerequisites", new { TopicId = TopicId });
 		}
 
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteDependence(int TopicId, int DependentId)
 		{
 			topicRepository.RemoveDependent(TopicId, DependentId);

@@ -2,6 +2,7 @@
 using ElMentors.Models.Tests;
 using ElMentors.Models.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace ElMentors.Controllers
 {
@@ -17,10 +18,12 @@ namespace ElMentors.Controllers
         [HttpGet("test1")]
         public IActionResult Test1()
         {
-             var query = context.Topic.Where(t => t.Id == 1).ToList();
-            int x = 1;
+            Test1 test1 = new Test1();
+            context.Add(test1);
+            test1.test2 = new Test2();
 
-            return Ok(query);
+            context.SaveChanges();
+			return Ok("added test2 to test1");
         }
     }
 }

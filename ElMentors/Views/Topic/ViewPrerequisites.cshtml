@@ -2,12 +2,18 @@
 <a asp-action="ViewTopics" class="btn btn-success" id="Back">
 	Back
 </a>
-<a asp-action="AddPrerequisites" asp-route-TopicId="@ViewBag.TopicId" class="btn btn-success" id="Add">
-	Add Prerequisite
-</a>
+@if (User.IsInRole("Admin"))
+{
+	<a asp-action="AddPrerequisites" asp-route-TopicId="@ViewBag.TopicId" class="btn btn-success" id="Add">
+		Add Prerequisite
+	</a>
+}
 
 @if(Model == null || !Model.Any())
 {
+	var x = ViewBag.TopicId;
+	var n = ViewBag.Name;
+
 	<p class="text-danger">
 		No Prerequisites available to display.
 	</p>
@@ -19,7 +25,10 @@ else
 			<tr id="Row1HeadTable">
 				<th>Prerequisite Name</th>
 				<th>Prerequisite Description</th>
-				<th>Delete Prerequisite</th>
+				@if (User.IsInRole("Admin"))
+				{
+					<th>Delete Prerequisite</th>
+				}
 			</tr>
 		</thead>
 
@@ -29,11 +38,14 @@ else
 				<tr id="rowBody">
 					<td>@topic?.Name</td>
 					<td>@topic?.Description</td>
-					<td>
-						<a asp-action="DeletePrerequisite" asp-route-TopicId="@ViewBag.TopicId" asp-route-PrerequisiteId="@topic?.Id" class="btn btn-success">
-							Delete Prerequisite
-						</a>
-					</td>
+					@if (User.IsInRole("Admin"))
+					{
+						<td>
+							<a asp-action="DeletePrerequisite" asp-route-TopicId="@ViewBag.TopicId" asp-route-PrerequisiteId="@topic?.Id" class="btn btn-danger">
+								Delete Prerequisite
+							</a>
+						</td>
+					}
 				</tr>
 			}
 		</tbody>

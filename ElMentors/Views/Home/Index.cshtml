@@ -2,38 +2,77 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div>
-    <a class="btn btn-success" asp-action="AddTopic" asp-controller="Topic"> Add Topic </a>
+<div class="container mt-5">
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <h1 class="display-4 fw-bold mb-3">Welcome to Mentors</h1>
+            <p class="lead">Connecting students with experienced mentors for academic and career guidance. Find the right mentor, learn new skills, and achieve your goals!</p>
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <a href="/Account/SignUp" class="btn btn-primary btn-lg rounded-pill shadow-sm me-2 px-4">Get Started</a>
+                <a href="/Account/LogIn" class="btn btn-outline-secondary btn-lg rounded-pill shadow-sm px-4">Log In</a>
+            }
+        </div>
+        <div class="col-md-6 text-center">
+            <i class="fas fa-users fa-7x text-primary mb-3"></i>
+            <div class="fw-semibold mt-2">Mentors & Students, Connected</div>
+        </div>
+    </div>
+
+    <hr class="my-5" />
+
+    <div class="row text-center mb-5">
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">For Students</h5>
+                    <p class="card-text">Search for mentors, explore topics, and get guidance tailored to your needs. Rate your mentors and track your learning journey.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">For Mentors</h5>
+                    <p class="card-text">Share your expertise, manage your profile, add topics, and help students grow. Set your price, offer discounts, and build your reputation.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">How It Works</h5>
+                    <p class="card-text">Sign up, create your profile, connect with mentors or students, and start your journey. Secure, easy, and effective for everyone.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col text-center">
+            <h2 class="mb-4">Explore Features</h2>
+            <a href="/Topic/ViewTopics" class="btn btn-outline-primary btn-lg mx-2 rounded-pill shadow-sm px-4">Browse Topics</a>
+            <a href="/Account/UploadPhoto" class="btn btn-outline-success btn-lg mx-2 rounded-pill shadow-sm px-4">Upload Photo</a>
+        </div>
+    </div>
 </div>
 
-<br />
-
-<div>
-    <a class="btn btn-success" asp-action="SignUp" asp-controller="Account">Sign Up</a>
-</div>
-
-<br />
-
-<div>
-    <a class="btn btn-success" asp-action="ViewTopics" asp-controller="Topic"> View Topics </a>
-</div>
-
-<br />
-
-<div>
-    <a class="btn btn-success" asp-action="AddRole" asp-controller="Account"> Add Role </a>
-</div>
-
-<br />
-
-
-<div>
-	<a class="btn btn-success" asp-action="LogIn" asp-controller="Account"> LogIn  </a>
-</div>
-
-<br />
-
-
-<div>
-    <a class="btn btn-success" asp-action="SignOut" asp-controller="Account"> SignOut  </a>
-</div>
+<style>
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+    .btn-primary, .btn-outline-primary, .btn-outline-success, .btn-outline-secondary {
+        min-width: 160px;
+        margin-bottom: 10px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        transition: box-shadow 0.2s;
+    }
+    .btn:hover, .btn:focus {
+        box-shadow: 0 2px 8px rgba(0,123,255,0.10);
+    }
+    .display-4 {
+        color: #0056b3;
+    }
+</style>

@@ -1,7 +1,72 @@
-﻿
-<form asp-action="SaveRole">
-	<label class="control-label">Add Role</label>
-	<input name="RoleName" class="form-control" />
+﻿@using Microsoft.AspNetCore.Identity
+@inject RoleManager<ElMentors.Models.Account.ApplicationRole> RoleManager
+@inject UserManager<ElMentors.Models.Account.ApplicationUser> UserManager
 
-	<input type="submit" value="Create" class="btn btn-primary" />
-</form>
+@{
+    ViewData["Title"] = "Role Management";
+    var roles = RoleManager.Roles.ToList();
+    var users = UserManager.Users.ToList();
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow-lg p-4 mb-4">
+                <h3 class="mb-3">Add New Role</h3>
+                <form asp-action="SaveRole">
+                    <div class="mb-3 d-flex align-items-center">
+                        <i class="fas fa-plus-circle fa-lg text-primary me-2"></i>
+                        <input name="RoleName" class="form-control" placeholder="e.g. Mentor, Admin, Student" required />
+                        <button type="submit" class="btn btn-primary rounded-pill shadow-sm ms-2 px-4">Create Role</button>
+                    </div>
+                </form>
+
+            </div>
+            <div class="card shadow-lg p-4">
+                <h3 class="mb-3">Assign Role to User</h3>
+                <form asp-action="AssignRoleToUser" method="post">
+                    <div class="row align-items-center g-2">
+                        <div class="col">
+                            <input name="UserId" class="form-control" placeholder="Search by User ID..." required />
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-arrow-right fa-lg text-secondary"></i>
+                        </div>
+                        <div class="col">
+                            <select name="RoleName" class="form-select" required>
+                                <option value="">Select role...</option>
+                                @foreach (var role in roles)
+                                {
+                                    <option value="@role.Name">@role.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-success rounded-pill shadow-sm px-4">Assign</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-lg p-4">
+                <h3 class="mb-3">Existing Roles</h3>
+                <table class="table table-bordered table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Role Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var role in roles)
+                        {
+                            <tr>
+                                <td>@role.Name</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -28,10 +28,10 @@ namespace ElMentors
                 option.Password.RequireUppercase = false;
                 option.Password.RequireDigit = false;
             }).AddEntityFrameworkStores<Context>();
-            builder.Services.AddControllers().AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-            });
+            //builder.Services.AddControllers().AddJsonOptions(options =>
+            //{
+            //    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+            //});
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

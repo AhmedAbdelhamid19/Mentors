@@ -1,15 +1,25 @@
-﻿@model Topic;
+﻿@model Topic
 
-<form asp-action="SaveTopic" asp-controller="Topic" method="post">
-    <div id="Name">
-        <label asp-for="Name" class="form-label"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card shadow-lg p-4">
+                <a asp-action="ViewTopics" class="btn btn-link mb-3 px-0">&larr; Back to Topics</a>
+                <h2 class="mb-4 text-center">Add New Topic</h2>
+                <form asp-action="SaveTopic" asp-controller="Topic" method="post">
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="mb-4">
+                        <label asp-for="Description" class="form-label"></label>
+                        <textarea asp-for="Description" class="form-control"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100 rounded-pill shadow-sm py-2">Save Topic</button>
+                </form>
+            </div>
+        </div>
     </div>
-    <div id="Description">
-        <label asp-for="Description" class="form-label"></label>
-        <textarea asp-for="Description" class="form-control"></textarea>
-        <span asp-validation-for="Description" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-success">Save Topic</button>
-</form>
+</div>

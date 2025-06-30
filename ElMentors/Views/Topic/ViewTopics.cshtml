@@ -1,52 +1,76 @@
 ﻿@model List<Topic>
 
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">Topics</h2>
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-action="AddTopic" class="btn btn-primary btn-lg rounded-pill shadow-sm mb-3">
+                <i class="fas fa-plus me-1"></i> Add New Topic
+            </a>
+        }
+    </div>
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-warning text-center">No topics available to display.</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover align-middle shadow-sm rounded">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Topic Name</th>
+                        <th>Description</th>
+                        <th>Prerequisites</th>
+                        <th>Dependences</th>
+                        <th>Edit</th>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <th>Delete</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var topic in Model)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@topic?.Name</td>
+                            <td>@topic?.Description</td>
+                            <td>
+                                <a asp-action="ViewPrerequisites" asp-route-TopicId="@topic?.Id" class="btn btn-outline-info btn-sm rounded-pill shadow-sm">
+                                    <i class="fas fa-eye me-1"></i> View
+                                </a>
+                            </td>
+                            <td>
+                                <a asp-action="ViewDependences" asp-route-TopicId="@topic?.Id" class="btn btn-outline-info btn-sm rounded-pill shadow-sm">
+                                    <i class="fas fa-eye me-1"></i> View
+                                </a>
+                            </td>
+                            <td>
+                                <a asp-action="EditTopic" asp-route-id="@topic?.Id" class="btn btn-outline-primary btn-sm rounded-pill shadow-sm">
+                                    <i class="fas fa-edit me-1"></i> Edit
+                                </a>
+                            </td>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <td>
+                                    <a asp-action="DeleteTopic" asp-route-TopicId="@topic?.Id" class="btn btn-outline-danger btn-sm rounded-pill shadow-sm">
+                                        <i class="fas fa-trash-alt me-1"></i> Delete
+                                    </a>
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
 
-<a asp-action="AddTopic" class="btn btn-success">Add New Topic</a>
-@if (Model == null || !Model.Any())
-{
-    <p class="text-danger">No topics available to display.</p>
-}
-else
-{
-    <table class="table table-bordered table-hover table-light">
-        <thead>
-            <tr id="Row1HeadTable">
-                <th>Topic Name</th>
-                <th>Topic Description</th>
-                <th>View Prerequisites</th>
-                <th>View Dependences</th>
-                <th>Edit Topic</th>
-                <th>Delete Topic</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (Topic topic in Model)
-            {
-                <tr id="rowBody">
-                    <td>@topic?.Name</td>
-                    <td>@topic?.Description</td>
-                    <td>
-                        <a asp-action="ViewPrerequisites" asp-route-TopicId="@topic?.Id" class="btn btn-info">
-                            View Prerequisites
-                        </a>
-                    </td>
-                    <td>
-                        <a asp-action="ViewDependences" asp-route-TopicId="@topic?.Id" class="btn btn-info">
-                            View Dependences
-                        </a>
-                    </td>
-                    <td>
-                        <a asp-action="EditTopic" asp-route-id="@topic?.Id" class="btn btn-info">
-                            Edit Topic
-                        </a>
-                    </td>
-                    <td>
-                        <a asp-action="DeleteTopic" asp-route-TopicId="@topic?.Id" class="btn btn-info">
-                            Delete Topic
-                        </a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+<style>
+    .table { background: #fff; border-radius: 0.5rem; overflow: hidden; }
+    .table th, .table td { vertical-align: middle; }
+    .btn { min-width: 80px; }
+    .fw-bold { color: #0056b3; }
+</style>

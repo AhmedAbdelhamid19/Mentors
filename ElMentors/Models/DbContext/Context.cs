@@ -4,6 +4,7 @@ using ElMentors.Models.Topics;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace ElMentors.Models.Context
 {
@@ -25,32 +26,14 @@ namespace ElMentors.Models.Context
             return base.SaveChanges();
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            modelBuilder.Entity<MidTest>()
-                .HasKey(mt => new { mt.Test1Id, mt.Test2Id });
-            modelBuilder.Entity<MidTest>()
-                .HasOne(mt => mt.Test1)
-                .WithMany(t1 => t1.mids)
-                .HasForeignKey(mt => mt.Test1Id);
-            modelBuilder.Entity<MidTest>()
-                .HasOne(mt => mt.Test2)
-                .WithMany(t2 => t2.mids)
-                .HasForeignKey(mt => mt.Test2Id);
-
-            modelBuilder.Entity<parent>().UseTpcMappingStrategy();
-
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(builder);
         }
 
         public DbSet<Topic> Topic { get; set; }
         public DbSet<Test1> Test1 { get; set; }
         public DbSet<Test2> Test2 { get; set; }
-        public DbSet<MidTest> MidTests { get; set; }
 
-        public DbSet<parent> Parents { get; set; }
-        public DbSet<child1> child1s { get; set; }
-
-        public DbSet<child2> child2s { get; set; }
     }
 }
